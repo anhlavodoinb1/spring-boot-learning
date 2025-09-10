@@ -1,0 +1,58 @@
+@startuml bidv-bsc-cctg-sequence
+title Luồng phát hành thứ cấp CCTG giữa BIDV và BSC
+
+participant "Nghiệp vụ" as Business
+participant "Tiền gửi ngoài core" as ExternalDeposit  
+participant "Corebanking" as Core
+participant "BSC" as BSC
+
+== Bước 1: Khai báo chứng chỉ tiền gửi sơ cấp ==
+Business -> ExternalDeposit: Khai báo CCTG sơ cấp\n(serial, tên chứng chỉ, kỳ hạn,\nmệnh giá, số lượng, tổng tiền,\nlãi suất sơ cấp, kỳ trả lãi)
+ExternalDeposit -> ExternalDeposit: Lưu thông tin CCTG
+note right: Hệ thống lưu trữ\nthông tin chứng chỉ\ntiền gửi sơ cấp
+
+== Bước 2: Khai báo thông tin công ty chứng khoán ==
+Business -> ExternalDeposit: Khai báo thông tin BSC\n(CIF, tên đối tác,\nsố tài khoản ngân hàng)
+ExternalDeposit -> ExternalDeposit: Lưu thông tin BSC
+note right: Lưu thông tin\nđối tác mua CCTG
+
+== Bước 3: BSC đăng ký mua CCTG sơ cấp ==
+BSC -> ExternalDeposit: Đăng ký mua CCTG\n(qua BidvDirect hoặc tại quầy)
+note left: BSC gửi yêu cầu\nmua chứng chỉ
+
+== Bước 4: Xử lý hợp đồng và hạch toán ==
+ExternalDeposit -> ExternalDeposit: Tạo hợp đồng mua\n(CIF khách hàng, tên người mua,\nserial chứng chỉ)
+note right: Lưu thông tin\nhợp đồng vào\nchương trình
+
+ExternalDeposit -> Core: Gửi thông tin hạch toán\n(ghi nợ TK BSC,\nghi có TK BIDV)
+
+alt Hạch toán thành công
+    Core -> ExternalDeposit: Xác nhận hạch toán thành công
+    ExternalDeposit -> BSC: Gọi service cập nhật\nsố dư CCTG
+    
+    alt Cập nhật BSC thành công
+        BSC -> ExternalDeposit: Xác nhận cập nhật thành công
+        ExternalDeposit -> Business: Thông báo giao dịch thành công
+        note over Business, BSC: **Luồng hoàn tất thành công**
+    else Cập nhật BSC thất bại (retry)
+        BSC -> ExternalDeposit: Lỗi cập nhật
+        ExternalDeposit -> ExternalDeposit: Retry vài lần
+        
+        alt Retry thành công
+            ExternalDeposit -> BSC: Gọi lại service cập nhật
+            BSC -> ExternalDeposit: Xác nhận thành công
+            ExternalDeposit -> Business: Thông báo giao dịch thành công
+        else Retry thất bại
+            ExternalDeposit -> Core: Yêu cầu hoàn tiền\n(ghi có BSC, ghi nợ BIDV)
+            Core -> ExternalDeposit: Xác nhận hoàn tiền
+            ExternalDeposit -> Business: Thông báo lỗi và hoàn tiền
+            note over Business, BSC: **Luồng thất bại - đã hoàn tiền**
+        end
+    end
+else Hạch toán thất bại
+    Core -> ExternalDeposit: Thông báo lỗi hạch toán
+    ExternalDeposit -> Business: Thông báo lỗi cho khách hàng
+    note over Business, BSC: **Dừng luồng do lỗi hạch toán**
+end
+
+@enduml
