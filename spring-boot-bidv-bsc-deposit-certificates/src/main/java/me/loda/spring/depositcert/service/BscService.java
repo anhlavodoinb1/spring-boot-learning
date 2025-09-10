@@ -1,6 +1,7 @@
 package me.loda.spring.depositcert.service;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,9 @@ import java.util.Random;
  * Cập nhật số dư chứng chỉ tiền gửi bên BSC
  */
 @Service
-@Slf4j
 public class BscService {
 
+    private static final Logger log = LoggerFactory.getLogger(BscService.class);
     private final Random random = new Random();
 
     /**

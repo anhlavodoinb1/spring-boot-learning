@@ -1,9 +1,5 @@
 package me.loda.spring.depositcert.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,9 +12,6 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "purchase_contracts")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PurchaseContract {
 
     @Id
@@ -76,6 +69,30 @@ public class PurchaseContract {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    // Constructors
+    public PurchaseContract() {}
+
+    public PurchaseContract(Long id, String contractNumber, SecuritiesCompany securitiesCompany, 
+                          PrimaryDepositCertificate primaryCertificate, String buyerCif, String buyerName, 
+                          Long purchaseQuantity, BigDecimal totalAmount, ContractStatus status, 
+                          String accountingTransactionId, String errorMessage, Integer retryCount, 
+                          LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.contractNumber = contractNumber;
+        this.securitiesCompany = securitiesCompany;
+        this.primaryCertificate = primaryCertificate;
+        this.buyerCif = buyerCif;
+        this.buyerName = buyerName;
+        this.purchaseQuantity = purchaseQuantity;
+        this.totalAmount = totalAmount;
+        this.status = status;
+        this.accountingTransactionId = accountingTransactionId;
+        this.errorMessage = errorMessage;
+        this.retryCount = retryCount;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -86,6 +103,49 @@ public class PurchaseContract {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getContractNumber() { return contractNumber; }
+    public void setContractNumber(String contractNumber) { this.contractNumber = contractNumber; }
+
+    public SecuritiesCompany getSecuritiesCompany() { return securitiesCompany; }
+    public void setSecuritiesCompany(SecuritiesCompany securitiesCompany) { this.securitiesCompany = securitiesCompany; }
+
+    public PrimaryDepositCertificate getPrimaryCertificate() { return primaryCertificate; }
+    public void setPrimaryCertificate(PrimaryDepositCertificate primaryCertificate) { this.primaryCertificate = primaryCertificate; }
+
+    public String getBuyerCif() { return buyerCif; }
+    public void setBuyerCif(String buyerCif) { this.buyerCif = buyerCif; }
+
+    public String getBuyerName() { return buyerName; }
+    public void setBuyerName(String buyerName) { this.buyerName = buyerName; }
+
+    public Long getPurchaseQuantity() { return purchaseQuantity; }
+    public void setPurchaseQuantity(Long purchaseQuantity) { this.purchaseQuantity = purchaseQuantity; }
+
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
+
+    public ContractStatus getStatus() { return status; }
+    public void setStatus(ContractStatus status) { this.status = status; }
+
+    public String getAccountingTransactionId() { return accountingTransactionId; }
+    public void setAccountingTransactionId(String accountingTransactionId) { this.accountingTransactionId = accountingTransactionId; }
+
+    public String getErrorMessage() { return errorMessage; }
+    public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
+
+    public Integer getRetryCount() { return retryCount; }
+    public void setRetryCount(Integer retryCount) { this.retryCount = retryCount; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     public enum ContractStatus {
         PENDING,           // Đang chờ xử lý

@@ -1,7 +1,7 @@
 package me.loda.spring.depositcert.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import me.loda.spring.depositcert.dto.CertificatePurchaseRequest;
 import me.loda.spring.depositcert.dto.PrimaryDepositCertificateRequest;
 import me.loda.spring.depositcert.dto.SecuritiesCompanyRequest;
@@ -25,15 +25,27 @@ import java.util.UUID;
  * Service chính cho luồng phát hành thứ cấp giữa BIDV và BSC
  */
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class DepositCertificateService {
 
+    private static final Logger log = LoggerFactory.getLogger(DepositCertificateService.class);
+    
     private final PrimaryDepositCertificateRepository certificateRepository;
     private final SecuritiesCompanyRepository companyRepository;
     private final PurchaseContractRepository contractRepository;
     private final CoreBankingService coreBankingService;
     private final BscService bscService;
+
+    public DepositCertificateService(PrimaryDepositCertificateRepository certificateRepository,
+                                   SecuritiesCompanyRepository companyRepository,
+                                   PurchaseContractRepository contractRepository,
+                                   CoreBankingService coreBankingService,
+                                   BscService bscService) {
+        this.certificateRepository = certificateRepository;
+        this.companyRepository = companyRepository;
+        this.contractRepository = contractRepository;
+        this.coreBankingService = coreBankingService;
+        this.bscService = bscService;
+    }
 
     /**
      * Bước 1: Nghiệp vụ khai báo chứng chỉ tiền gửi sơ cấp

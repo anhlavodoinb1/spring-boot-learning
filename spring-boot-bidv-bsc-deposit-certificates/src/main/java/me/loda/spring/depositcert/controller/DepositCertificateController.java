@@ -1,7 +1,7 @@
 package me.loda.spring.depositcert.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import me.loda.spring.depositcert.dto.ApiResponse;
 import me.loda.spring.depositcert.dto.CertificatePurchaseRequest;
 import me.loda.spring.depositcert.dto.PrimaryDepositCertificateRequest;
@@ -30,12 +30,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/deposit-certificates")
-@RequiredArgsConstructor
 @Validated
-@Slf4j
 public class DepositCertificateController {
 
+    private static final Logger log = LoggerFactory.getLogger(DepositCertificateController.class);
     private final DepositCertificateService depositCertificateService;
+
+    public DepositCertificateController(DepositCertificateService depositCertificateService) {
+        this.depositCertificateService = depositCertificateService;
+    }
 
     /**
      * Bước 1: Nghiệp vụ khai báo chứng chỉ tiền gửi sơ cấp
