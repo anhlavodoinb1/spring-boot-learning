@@ -97,6 +97,7 @@
     <module>jpa-hibernate-custom-validation</module>
     <module>test-mockito-basic</module>
     <module>spring-boot-19-testing-in-spring-boot-2</module>
+    <module>sequence-diagrams-bidv-bsc</module>
   </modules>
 
   <properties>

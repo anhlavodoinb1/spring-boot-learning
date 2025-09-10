@@ -113,6 +113,7 @@ Lướt dạo rồi té :'(
 28. [spring-boot-application-context-events](https://github.com/loda-kun/spring-boot-learning/tree/master/spring-boot-application-context-events): Các sự kiện của ApplicationContext
 29. [spring-boot-swagger2](https://github.com/loda-kun/spring-boot-learning/tree/master/spring-boot-swagger2): RESTful API Document Tạo với Spring Boot + Swagger
 30. [spring-boot-swagger3-openapi3](https://github.com/loda-kun/spring-boot-learning/tree/master/spring-boot-swagger3-openapi3): RESTful API Document với Spring Boot + OpenApi 3.0
+31. [sequence-diagrams-bidv-bsc](https://github.com/loda-kun/spring-boot-learning/tree/master/sequence-diagrams-bidv-bsc): Biểu đồ Sequence - Luồng phát hành CCTG BIDV-BSC
 
 ### II. Spring Cloud (Đang xây dựng >.<) 
 1. [spring-cloud-config-server](https://github.com/loda-kun/spring-boot-learning/tree/master/spring-cloud-config-server) + [spring-cloud-config-client](https://github.com/loda-kun/spring-boot-learning/tree/master/spring-cloud-config-client): Hướng dẫn cấu hình nhiều properties bằng Spring Cloud Config Server
